@@ -4,18 +4,18 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 var err error
 
-const urlDSN = "root:Dee154595@@tcp(localhost:3306)/goDB?parseTime=true"
+// const urlDSN = "root:Dee154595@@tcp(localhost:3306)/goDB?parseTime=true"
+const urlDSN = "postgres://testuser:test123@localhost:5432/mydb?sslmode=disable"
 
 type User struct {
 	gorm.Model
-
 	FirstName string `JSON:"firstname"`
 	LastName  string `JSON:"lastname"`
 	Email     string `JSON:"email"`
@@ -23,7 +23,7 @@ type User struct {
 
 // -------connection establised with database using gorm
 func InitialMigration() {
-	DB, err = gorm.Open(mysql.Open(urlDSN), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(urlDSN), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err.Error())
 		panic("cannot connect to database ")
